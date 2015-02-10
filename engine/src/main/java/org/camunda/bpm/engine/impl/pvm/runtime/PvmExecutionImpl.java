@@ -24,6 +24,7 @@ import org.camunda.bpm.engine.impl.core.instance.CoreExecution;
 import org.camunda.bpm.engine.impl.core.variable.scope.AbstractVariableScope;
 import org.camunda.bpm.engine.impl.pvm.PvmActivity;
 import org.camunda.bpm.engine.impl.pvm.PvmException;
+import org.camunda.bpm.engine.impl.pvm.PvmExecution;
 import org.camunda.bpm.engine.impl.pvm.PvmProcessDefinition;
 import org.camunda.bpm.engine.impl.pvm.PvmProcessInstance;
 import org.camunda.bpm.engine.impl.pvm.PvmTransition;
@@ -718,6 +719,25 @@ public abstract class PvmExecutionImpl extends CoreExecution implements Activity
       }
     }
     return null;
+  }
+
+  public List<PvmExecution> findExecutions(String activityId) {
+    List<PvmExecution> matchingExecutions = new ArrayList<PvmExecution>();
+    collectExecutions(activityId, matchingExecutions);
+
+    return matchingExecutions;
+  }
+
+  protected void collectExecutions(String activityId, List<PvmExecution> executions) {
+    if ( (getActivity()!=null)
+        && (getActivity().getId().equals(activityId))
+      ) {
+      executions.add(this);
+    }
+
+    for (PvmExecutionImpl nestedExecution : getExecutions()) {
+      nestedExecution.collectExecutions(activityId, executions);
+    }
   }
 
   public List<String> findActiveActivityIds() {

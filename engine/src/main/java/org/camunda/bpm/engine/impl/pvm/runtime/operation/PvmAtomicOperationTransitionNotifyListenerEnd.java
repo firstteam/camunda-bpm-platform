@@ -13,6 +13,7 @@
 package org.camunda.bpm.engine.impl.pvm.runtime.operation;
 
 import org.camunda.bpm.engine.delegate.ExecutionListener;
+import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
 import org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl;
 
@@ -33,7 +34,14 @@ public class PvmAtomicOperationTransitionNotifyListenerEnd extends PvmAtomicOper
   @Override
   protected void eventNotificationsCompleted(PvmExecutionImpl execution) {
     super.eventNotificationsCompleted(execution);
-    execution.performOperation(TRANSITION_DESTROY_SCOPE);
+
+    ActivityImpl activity = execution.getActivity();
+    if (activity.isMultiInstance()) {
+      execution.performOperation(MULTI_INSTANCE_COMPLETE);
+    } else {
+      execution.performOperation(TRANSITION_DESTROY_SCOPE);
+    }
+
   }
 
   public String getCanonicalName() {

@@ -47,7 +47,12 @@ public abstract class PvmAtomicOperationCreateScope implements PvmAtomicOperatio
       propagatingExecution = execution;
     }
 
-    scopeCreated(propagatingExecution);
+    if (activity.isMultiInstance()) {
+      propagatingExecution.performOperation(MULTI_INSTANCE_INITIALIZE);
+    } else {
+      scopeCreated(propagatingExecution);
+    }
+
   }
 
   /**

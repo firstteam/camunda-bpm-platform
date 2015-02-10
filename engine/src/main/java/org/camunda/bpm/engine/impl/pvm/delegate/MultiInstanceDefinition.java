@@ -10,30 +10,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.camunda.bpm.engine.impl.pvm;
+package org.camunda.bpm.engine.impl.pvm.delegate;
 
 import java.util.List;
-import java.util.Map;
 
+import org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl;
 
 /**
- * @author Tom Baeyens
- * @author Daniel Meyer
+ * @author Thorben Lindhauer
+ *
  */
-public interface PvmProcessInstance extends PvmExecution {
+public interface MultiInstanceDefinition {
 
-  void start();
+  List<PvmExecutionImpl> initializeMultiInstance(PvmExecutionImpl execution);
 
-  void start(Map<String, Object> variables);
+  boolean completesActivity(PvmExecutionImpl execution);
 
-  PvmExecution findExecution(String activityId);
+  PvmExecutionImpl getPropagatingExecution(PvmExecutionImpl execution);
 
-  List<PvmExecution> findExecutions(String activityId);
+  void activityCompleted(PvmExecutionImpl propagatingExecution);
 
-  List<String> findActiveActivityIds();
-
-  boolean isEnded();
-
-  void deleteCascade(String deleteReason);
 }

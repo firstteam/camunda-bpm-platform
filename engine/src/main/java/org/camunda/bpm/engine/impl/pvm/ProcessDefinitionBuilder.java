@@ -20,6 +20,7 @@ import java.util.Stack;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.impl.core.model.CoreModelElement;
 import org.camunda.bpm.engine.impl.pvm.delegate.ActivityBehavior;
+import org.camunda.bpm.engine.impl.pvm.delegate.MultiInstanceDefinition;
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ProcessDefinitionImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
@@ -105,6 +106,11 @@ public class ProcessDefinitionBuilder {
 
   public ProcessDefinitionBuilder behavior(ActivityBehavior activityBehaviour) {
     getActivity().setActivityBehavior(activityBehaviour);
+    return this;
+  }
+
+  public ProcessDefinitionBuilder multiInstanceDefinition(MultiInstanceDefinition definition) {
+    getActivity().setMultiInstanceDefinition(definition);
     return this;
   }
 

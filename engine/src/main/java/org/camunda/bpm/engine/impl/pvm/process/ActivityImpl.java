@@ -22,6 +22,7 @@ import org.camunda.bpm.engine.impl.pvm.PvmActivity;
 import org.camunda.bpm.engine.impl.pvm.PvmException;
 import org.camunda.bpm.engine.impl.pvm.PvmTransition;
 import org.camunda.bpm.engine.impl.pvm.delegate.ActivityBehavior;
+import org.camunda.bpm.engine.impl.pvm.delegate.MultiInstanceDefinition;
 
 
 /**
@@ -37,6 +38,8 @@ public class ActivityImpl extends ScopeImpl implements PvmActivity, HasDIBounds 
   protected List<TransitionImpl> incomingTransitions = new ArrayList<TransitionImpl>();
 
   protected ActivityBehavior activityBehavior;
+
+  protected MultiInstanceDefinition multiInstanceDefinition;
 
   protected ScopeImpl parent;
 
@@ -130,6 +133,18 @@ public class ActivityImpl extends ScopeImpl implements PvmActivity, HasDIBounds 
 
   public void setActivityBehavior(ActivityBehavior activityBehavior) {
     this.activityBehavior = activityBehavior;
+  }
+
+  public void setMultiInstanceDefinition(MultiInstanceDefinition multiInstanceDefinition) {
+    this.multiInstanceDefinition = multiInstanceDefinition;
+  }
+
+  public MultiInstanceDefinition getMultiInstanceDefinition() {
+    return multiInstanceDefinition;
+  }
+
+  public boolean isMultiInstance() {
+    return multiInstanceDefinition != null;
   }
 
   public ScopeImpl getParent() {
